@@ -1,2 +1,5 @@
-# study-tool-api
- An API to connect study-tool front end to database
+# Study Tool API
+
+===
+
+An API to used to connect the study tool front end to database
