@@ -1,4 +1,5 @@
 const express = require('express')
+const bcrypt = require('bcrypt');
 const router = express.Router()
 const User = require('../models/user')
 const getUser = require('../middleware/getUser')
@@ -21,8 +22,9 @@ router.get('/:id', getUser, (req, res) => {
 // register user
 router.post('/register', async (req, res) => {
     try {
-        const { username, password_hash, email } = req.body;
-        const user = new User({ username, password_hash, email });
+        const { username, password, email } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = new User({ username, password_hash: hashedPassword, email });
         await user.save();
         res.status(201).send('User registered');
       } catch (error) {
