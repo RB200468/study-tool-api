@@ -3,7 +3,8 @@ const express = require('express');
 const app = express();
 const portNumber = 5001
 const mongoose = require('mongoose')
-const connectDB = require('./config.js')
+const connectDB = require('./config/connectDB.js')
+app.use(express.json())
 
 // Database connection
 connectDB()
@@ -11,6 +12,9 @@ connectDB()
 // Routers
 const usersRouter = require('./routes/users')
 app.use('/users', usersRouter)
+
+const authenticationRouter = require('./routes/authentication.js')
+app.use('/auth', authenticationRouter)
 
 
 
