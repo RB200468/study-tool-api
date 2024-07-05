@@ -3,7 +3,7 @@ const router = express.Router()
 const User = require('../models/user')
 const getUser = require('../middleware/getUser')
 
-// getting all
+// get all users
 router.get('/', async (req, res) => {
     try {
         const users = await User.find()
@@ -13,13 +13,13 @@ router.get('/', async (req, res) => {
     }
 })
 
-// getting one
+// get user
 router.get('/:id', getUser, (req, res) => {
-    res.send(res.user.username)
+    res.send(res.user)
 })
 
-// creating one
-router.post('/', async (req, res) => {
+// register user
+router.post('/register', async (req, res) => {
     try {
         const { username, password_hash, email } = req.body;
         const user = new User({ username, password_hash, email });
@@ -30,14 +30,19 @@ router.post('/', async (req, res) => {
       }
 })
 
-// updating one
+// update user
 router.patch('/:id', getUser, (req, res) => {
     
 })
 
-// deleting one
-router.delete('/:id', getUser, (req, res) => {
-    
+// delete user
+router.delete('/:id', getUser, async (req, res) => {
+    try {
+        await res.user.deleteOne()
+        res.json({ message: 'Deleted user' })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
 })
 
 module.exports = router
