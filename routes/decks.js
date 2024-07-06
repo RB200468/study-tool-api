@@ -8,20 +8,20 @@ const jwtAuth = require('../middleware/jwtAuth');
 // get all
 router.get('/', jwtAuth, async (req, res) => {
     try {
-        const user = await User.findOne(req.user.id)
+        const user = await User.findById(req.user.id)
 
         if (!user){
-            res.status(400).json({ message: "User not found" })
+            return res.status(400).json({ message: "User not found" })
         }
 
         const decks = user.library.map(deck => ({
             id: deck.deck_id,
             name: deck.name
         }))
-        
-        res.status(200).json(decks)
+
+        return res.status(200).json(decks)
     } catch (err) {
-        res.status(500).json({ message: err.message })
+        return res.status(500).json({ message: err.message })
     }
 })
 
