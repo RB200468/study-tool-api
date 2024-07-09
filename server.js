@@ -19,6 +19,9 @@ app.use('/users', usersRouter)
 const authenticationRouter = require('./routes/authentication.js')
 app.use('/auth', authenticationRouter)
 
+const deckRouter = require('./routes/decks.js')
+app.use('/deck', deckRouter)
+
 
 
 app.get("/api", (req, res) => {
