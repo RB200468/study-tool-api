@@ -6,6 +6,11 @@ const checkUser = require('../utils/checkUser');
 const jwt = require('jsonwebtoken');
 const createAndSetToken = require('../utils/createAndSetToken')
 
+/* TODO:
+    - Update password
+    - Mabye move login to here
+*/
+
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
