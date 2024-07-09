@@ -26,7 +26,8 @@ app.use('/auth', authenticationRouter)
 const deckRouter = require('./routes/decks.js')
 app.use('/deck', deckRouter)
 
-
+const flashcardRouter = require('./routes/flashcards.js')
+app.use('/flashcard', flashcardRouter)
 
 app.get("/api", (req, res) => {
     res.json({"users": ["user1", "user2", "user3"]});
