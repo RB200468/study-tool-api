@@ -4,6 +4,13 @@ const router = express.Router()
 const User = require('../models/user')
 const getUser = require('../middleware/getUser')
 
+/* TODO:
+    - Update Username
+    - Update Email
+    - Update Password
+    - Get user for current authenticated user
+*/
+
 // get all users
 router.get('/', async (req, res) => {
     try {

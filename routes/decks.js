@@ -3,6 +3,11 @@ const router = express.Router()
 const User = require('../models/user')
 const jwtAuth = require('../middleware/jwtAuth');
 
+/* TODO:
+    - Update name of deck
+    - Get all decks given user id
+*/
+
 // get all
 router.get('/', jwtAuth, async (req, res) => {
     try {

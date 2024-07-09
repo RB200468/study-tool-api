@@ -9,6 +9,10 @@ const cookieParser = require('cookie-parser')
 app.use(express.json())
 app.use(cookieParser())
 
+/* TODO:
+    - Remove '/api' route
+*/
+
 // Database connection
 connectDB()
 
