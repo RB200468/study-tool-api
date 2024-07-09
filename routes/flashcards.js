@@ -3,6 +3,9 @@ const User = require('../models/user');
 const jwtAuth = require('../middleware/jwtAuth');
 const router = express.Router();
 
+/* TODO:
+    - Add Change Flashcard route
+*/
 
 // Create one given deck id, term and definition
 router.post('/:id', jwtAuth, async (req, res) => {
