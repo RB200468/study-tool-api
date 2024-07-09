@@ -1,8 +1,6 @@
 const express = require('express')
-const bcrypt = require('bcrypt');
 const router = express.Router()
 const User = require('../models/user')
-const getUser = require('../middleware/getUser');
 const jwtAuth = require('../middleware/jwtAuth');
 
 // get all
@@ -11,24 +9,72 @@ router.get('/', jwtAuth, async (req, res) => {
         const user = await User.findById(req.user.id)
 
         if (!user){
-            return res.status(400).json({ message: "User not found" })
+            res.status(404).json({ message: "User not found" })
         }
 
         const decks = user.library.map(deck => ({
-            id: deck.deck_id,
+            id: deck.id,
             name: deck.name
         }))
 
-        return res.status(200).json(decks)
+        res.status(200).json(decks)
     } catch (err) {
-        return res.status(500).json({ message: err.message })
+        res.status(500).json({ message: err.message })
     }
 })
 
 
-// get one
+// get one from current user's library
+router.get('/:id', jwtAuth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+        if (!user) {
+            res.status(404).json({ message: "User not found" })
+        }
 
-// create one
+        const deck = user.library.id(req.params.id)
+        if (!deck) {
+            res.status(404).json({ message: "Deck not found" })
+        }
+
+        const flashcards = deck.flashcards.map(flashcard => ({
+            id: flashcard.id,
+            term: flashcard.term,
+            definition: flashcard.definition
+        }))
+
+        res.status(200).json(flashcards)
+
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
+// create one for current user
+router.post('/', jwtAuth, async (req, res) => {
+    try{
+        const deckName = req.body.name;
+
+        const user = await User.findById(req.user.id)
+        if (!user) {
+            res.status(404).json({ message: "User not found"})
+        }        
+
+        const newDeck = {
+            name: deckName,
+            flashcards: []
+        }
+
+        user.library.push(newDeck);
+        await user.save();
+
+        res.status(200).json({ message: "Deck created"})
+
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
 
 // delete one
 
