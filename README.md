@@ -1,5 +1,7 @@
 # Study Tool REST API
 
+Currently in development, subject to changes and improvement.
+
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -52,7 +54,7 @@ This REST API provides the backend functionality for a study tool front end. It 
    npm run dev
    ```
 
-## Configuration
+# Configuration
 
 Create a `.env` file in the root of your project and add the following environment variables:
 
