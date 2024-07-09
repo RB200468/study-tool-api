@@ -76,7 +76,28 @@ router.post('/', jwtAuth, async (req, res) => {
 })
 
 
-// delete one
+// delete one of the current user's decks
+router.delete('/:id', jwtAuth, async (req, res) =>{
+    try {
+        const user = await User.findById(req.user.id)
+        if (!user) {
+            return res.status(404).json({ message: "User not found" })
+        }
+
+        const deck = user.library.id(req.params.id)
+        if (!deck) {
+            return res.status(404).json({ message: "Deck not found" })
+        }
+
+        deck.deleteOne()
+        await user.save();
+
+        return res.status(200).json({ message: "Deck deleted" })
+
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    } 
+})
 
 
 module.exports = router
