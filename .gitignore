@@ -1,6 +1,9 @@
 # Temporary routes
 route.rest
 
+# __mocks__ directories
+__mocks__/
+
 # Logs
 logs
 *.log
