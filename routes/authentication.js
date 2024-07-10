@@ -1,4 +1,5 @@
 require('dotenv').config()
+const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
@@ -38,13 +39,15 @@ router.post('/login', async (req, res) => {
 // register user
 router.post('/register', async (req, res) => {
     try {
-        const { username, password, email } = req.body;
+        const { username, password, email, is_admin } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ username, password_hash: hashedPassword, email });
+        
+        const user = new User({ username, password_hash: hashedPassword, email, is_admin });
+
         await user.save();
-        res.status(201).send('User registered');
-      } catch (error) {
-        res.status(400).send('Error registering user');
+        res.status(201).json({ message: "User registered" });
+      } catch (err) {
+        res.status(400).json({ message: err.message });
       }
 })
 
