@@ -7,10 +7,10 @@ const jwt = require('jsonwebtoken');
 const createAndSetToken = require('../utils/createAndSetToken')
 
 /* TODO:
-    - Update password
-    - Mabye move login to here
+    - 
 */
 
+// Log user in
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -34,5 +34,18 @@ router.post('/login', async (req, res) => {
         return res.status(500).json({ message: err.message });
     }
 });
+
+// register user
+router.post('/register', async (req, res) => {
+    try {
+        const { username, password, email } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = new User({ username, password_hash: hashedPassword, email });
+        await user.save();
+        res.status(201).send('User registered');
+      } catch (error) {
+        res.status(400).send('Error registering user');
+      }
+})
 
 module.exports = router;

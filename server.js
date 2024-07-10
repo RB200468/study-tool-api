@@ -9,7 +9,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 /* TODO:
-    - Remove '/api' route
+    - 
 */
 
 // Database connection
@@ -19,17 +19,14 @@ connectDB()
 const usersRouter = require('./routes/users')
 app.use('/users', usersRouter)
 
-const authenticationRouter = require('./routes/authentication.js')
+const authenticationRouter = require('./routes/authentication')
 app.use('/auth', authenticationRouter)
 
-const deckRouter = require('./routes/decks.js')
-app.use('/deck', deckRouter)
+const deckRouter = require('./routes/decks')
+app.use('/decks', deckRouter)
 
-const flashcardRouter = require('./routes/flashcards.js')
-app.use('/flashcard', flashcardRouter)
+const flashcardRouter = require('./routes/flashcards')
+app.use('/flashcards', flashcardRouter)
 
-app.get("/api", (req, res) => {
-    res.json({"users": ["user1", "user2", "user3"]});
-})
-
+// Server listening message
 app.listen(process.env.PORT, () => {console.log(`Server listening on port ${process.env.PORT}`)});
