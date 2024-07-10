@@ -23,10 +23,10 @@ const authenticationRouter = require('./routes/authentication.js')
 app.use('/auth', authenticationRouter)
 
 const deckRouter = require('./routes/decks.js')
-app.use('/deck', deckRouter)
+app.use('/decks', deckRouter)
 
 const flashcardRouter = require('./routes/flashcards.js')
-app.use('/flashcard', flashcardRouter)
+app.use('/flashcards', flashcardRouter)
 
 // Server listening message
 app.listen(process.env.PORT, () => {console.log(`Server listening on port ${process.env.PORT}`)});
