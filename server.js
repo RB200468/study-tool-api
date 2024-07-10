@@ -5,28 +5,52 @@ const mongoose = require('mongoose')
 const connectDB = require('./config/connectDB.js')
 const cookieParser = require('cookie-parser')
 
+
 app.use(express.json())
 app.use(cookieParser())
+
 
 /* TODO:
     - 
 */
 
+
 // Database connection
 connectDB()
 
+
 // Routers
 const usersRouter = require('./routes/users')
-app.use('/users', usersRouter)
-
 const authenticationRouter = require('./routes/authentication')
-app.use('/auth', authenticationRouter)
-
 const deckRouter = require('./routes/decks')
-app.use('/decks', deckRouter)
-
 const flashcardRouter = require('./routes/flashcards')
+
+
+app.use('/users', usersRouter)
+app.use('/auth', authenticationRouter)
+app.use('/decks', deckRouter)
 app.use('/flashcards', flashcardRouter)
 
-// Server listening message
-app.listen(process.env.PORT, () => {console.log(`Server listening on port ${process.env.PORT}`)});
+
+// Start server only if not in a test environment
+if (process.env.NODE_ENV !== 'test') {
+    const PORT = process.env.PORT;
+    const server = app.listen(PORT, () => {
+        console.log(`Server listening on port ${PORT}`);
+    });
+}
+
+
+// Handle graceful shutdown
+process.on('SIGINT', async () => {
+    try {
+        await mongoose.disconnect();
+        console.log('MongoDB disconnected');
+        process.exit(0);
+    } catch (err) {
+        console.error('Error disconnecting MongoDB:', err.message);
+        process.exit(1);
+    }
+});
+
+module.exports = app
