@@ -26,19 +26,6 @@ router.get('/:id', getUser, (req, res) => {
     res.send(res.user)
 })
 
-// register user
-router.post('/register', async (req, res) => {
-    try {
-        const { username, password, email } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ username, password_hash: hashedPassword, email });
-        await user.save();
-        res.status(201).send('User registered');
-      } catch (error) {
-        res.status(400).send('Error registering user');
-      }
-})
-
 // update user
 router.patch('/:id', getUser, (req, res) => {
     
