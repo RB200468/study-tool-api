@@ -59,8 +59,12 @@ This REST API provides the backend functionality for a study tool front end. It 
 Create a `.env` file in the root of your project and add the following environment variables:
 
 ```sh
+NODE_ENV=your_node_environment
+
 DB_CONNECTION_STRING=your_mongodb_connection_string
+
 JWT_SECRET=your_jwt_secret
+
 PORT=your_preferred_port
 ```
 
