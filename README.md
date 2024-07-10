@@ -85,12 +85,12 @@ npm start
 ### Authentication
 
 - `POST /auth/login` - Login user and get a token
+- `POST /auth/register/` - Register new user
 
 ### User
 
 - `GET /users/` - All users
 - `GET /users/:id` - Get user by ID
-- `POST /users/register/` - Register new user
 - `DELETE /users/:id` - Delete user by ID
 
 ### Deck
