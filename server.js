@@ -19,13 +19,13 @@ connectDB()
 const usersRouter = require('./routes/users')
 app.use('/users', usersRouter)
 
-const authenticationRouter = require('./routes/authentication.js')
+const authenticationRouter = require('./routes/authentication')
 app.use('/auth', authenticationRouter)
 
-const deckRouter = require('./routes/decks.js')
+const deckRouter = require('./routes/decks')
 app.use('/decks', deckRouter)
 
-const flashcardRouter = require('./routes/flashcards.js')
+const flashcardRouter = require('./routes/flashcards')
 app.use('/flashcards', flashcardRouter)
 
 // Server listening message
