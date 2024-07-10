@@ -85,25 +85,25 @@ npm start
 ### Authentication
 
 - `POST /auth/login` - Login user and get a token
+- `POST /auth/register/` - Register new user
 
 ### User
 
 - `GET /users/` - All users
 - `GET /users/:id` - Get user by ID
-- `POST /users/register/` - Register new user
 - `DELETE /users/:id` - Delete user by ID
 
 ### Deck
 
-- `GET /deck/` - Get all decks of current authed user
-- `GET /deck/:id` - Get flashcards of current authed user by deck ID
-- `POST /deck/` - Create new deck for current authed user
-- `DELETE /deck/:id` - Delete deck of current authed user by ID
+- `GET /decks/` - Get all decks of current authed user
+- `GET /decks/:id` - Get flashcards of current authed user by deck ID
+- `POST /decks/` - Create new deck for current authed user
+- `DELETE /decks/:id` - Delete deck of current authed user by ID
 
 ### Flashcard
 
 - `POST /flashcards/:id` - Create a flashcard in current authed user's deck by deck ID
-- `DELETE /flashcard/:id` - Delete a flashcard in current authed user's deck by deck ID and flashcard ID
+- `DELETE /flashcards/:id` - Delete a flashcard in current authed user's deck by deck ID and flashcard ID
 
 # Authentication
 
