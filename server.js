@@ -9,7 +9,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 /* TODO:
-    - Remove '/api' route
+    - 
 */
 
 // Database connection
@@ -28,8 +28,5 @@ app.use('/deck', deckRouter)
 const flashcardRouter = require('./routes/flashcards.js')
 app.use('/flashcard', flashcardRouter)
 
-app.get("/api", (req, res) => {
-    res.json({"users": ["user1", "user2", "user3"]});
-})
-
+// Server listening message
 app.listen(process.env.PORT, () => {console.log(`Server listening on port ${process.env.PORT}`)});
