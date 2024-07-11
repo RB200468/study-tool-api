@@ -88,6 +88,19 @@ router.delete('/users/:id', jwtAuth, confirmUser, isAdmin, getUser, async (req, 
 })
 
 // Get any users decks by user ID
+router.get('/users/:id/decks', jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+    try {
+
+        const decks = res.user.library.map(deck => ({
+            id: deck.id,
+            name: deck.name
+        }))
+
+        res.status(200).json(decks)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
 
 // Update any users deck name by user ID and deck ID
 
