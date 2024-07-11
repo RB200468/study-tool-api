@@ -2,7 +2,9 @@ const express = require('express')
 const bcrypt = require('bcrypt');
 const router = express.Router()
 const User = require('../models/user')
-const getUser = require('../middleware/getUser')
+const getUser = require('../middleware/getUser');
+const jwtAuth = require('../middleware/jwtAuth');
+const confirmUser = require('../middleware/confirmUser');
 
 /* TODO:
     - Update Username
@@ -11,19 +13,9 @@ const getUser = require('../middleware/getUser')
     - Get user for current authenticated user
 */
 
-// get all users
-router.get('/', async (req, res) => {
-    try {
-        const users = await User.find()
-        res.json(users)
-    } catch (err) {
-        res.status(500).json({ message: err.message })
-    }
-})
-
 // get user
-router.get('/:id', getUser, (req, res) => {
-    res.send(res.user)
+router.get('/', jwtAuth, confirmUser, (req, res) => {
+    res.send(req.user)
 })
 
 // update user
