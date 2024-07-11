@@ -88,9 +88,11 @@ npm start
 
 ### Admin
 
-- `GET /api/v1/admins/` - All users
 - `POST /api/v1/admins/register` - Register new user or admin
+- `GET /api/v1/admins/users` - Get all users
 - `PATCH /api/v1/admins/users/:id` - Update user credentials by ID
+- `DELETE /api/v1/admins/users/:id` - Delete user by ID
+- `GET /api/v1/admins/users/:id/decks` - Get decks given user ID
 
 ### Authentication
 
