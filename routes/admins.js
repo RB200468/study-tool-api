@@ -4,13 +4,14 @@ const User = require('../models/user')
 const jwtAuth = require('../middleware/jwtAuth');
 const confirmUser = require('../middleware/confirmUser')
 const isAdmin = require('../middleware/isAdmin');
+const getUser = require('../middleware/getUser');
 
 /* TODO:
     - Implement all endpoints
 */
 
 // Get all users
-router.get('/',jwtAuth, confirmUser, isAdmin, async (req, res) => {
+router.get('/users',jwtAuth, confirmUser, isAdmin, async (req, res) => {
     try {
         const users = await User.find()
         res.status(200).json(users)
@@ -43,6 +44,14 @@ router.post('/register', async (req, res) => {
 })
 
 // Get any user by user ID
+router.get('/users/:id',jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+    try {
+        const user = res.user
+        res.status(200).json(user)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
 
 // Update any user by user ID
 
