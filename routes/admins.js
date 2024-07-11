@@ -3,10 +3,44 @@ const router = express.Router()
 const User = require('../models/user')
 const jwtAuth = require('../middleware/jwtAuth');
 const confirmUser = require('../middleware/confirmUser')
+const isAdmin = require('../middleware/isAdmin');
 
 /* TODO:
     - Implement all endpoints
 */
+
+// Get all users
+router.get('/',jwtAuth, confirmUser, isAdmin, async (req, res) => {
+    try {
+        const users = await User.find()
+        res.status(200).json(users)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
+// Register user or admin
+router.post('/register', async (req, res) => {
+    try {
+        const { username, password, email, is_admin } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        const user = new User({ username, password_hash: hashedPassword, email, is_admin });
+
+        await user.save();
+
+        let regMessage
+        if (is_admin === true) {
+            regMessage = "Admin registered"
+        } else {
+            regMessage = "User registered"
+        }
+
+        res.status(201).json({ message: regMessage });
+      } catch (err) {
+        res.status(400).json({ message: err.message });
+      }
+})
 
 // Get any user by user ID
 
