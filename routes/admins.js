@@ -12,16 +12,6 @@ const checkReqBody = require('../middleware/checkReqBody')
     - Implement all endpoints
 */
 
-// Get all users
-router.get('/users',jwtAuth, confirmUser, isAdmin, async (req, res) => {
-    try {
-        const users = await User.find()
-        res.status(200).json(users)
-    } catch (err) {
-        res.status(500).json({ message: err.message })
-    }
-})
-
 // Register user or admin
 router.post('/register', async (req, res) => {
     try {
@@ -43,6 +33,16 @@ router.post('/register', async (req, res) => {
       } catch (err) {
         res.status(400).json({ message: err.message });
       }
+})
+
+// Get all users
+router.get('/users',jwtAuth, confirmUser, isAdmin, async (req, res) => {
+    try {
+        const users = await User.find()
+        res.status(200).json(users)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
 })
 
 // Get any user by user ID
@@ -78,6 +78,14 @@ router.patch('/users/:id', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser,
 })
 
 // Delete any user by user ID
+router.delete('/users/:id', jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+    try {
+        await res.user.deleteOne()
+        res.json({ message: 'Deleted user' })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
 
 // Get any users decks by user ID
 
