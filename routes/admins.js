@@ -1,10 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
+const bcrypt = require('bcrypt')
 const jwtAuth = require('../middleware/jwtAuth');
 const confirmUser = require('../middleware/confirmUser')
 const isAdmin = require('../middleware/isAdmin');
 const getUser = require('../middleware/getUser');
+const checkReqBody = require('../middleware/checkReqBody')
 
 /* TODO:
     - Implement all endpoints
@@ -44,7 +46,7 @@ router.post('/register', async (req, res) => {
 })
 
 // Get any user by user ID
-router.get('/users/:id',jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+router.get('/users/:id',jwtAuth, confirmUser, isAdmin, getUser, (req, res) => {
     try {
         const user = res.user
         res.status(200).json(user)
@@ -54,6 +56,26 @@ router.get('/users/:id',jwtAuth, confirmUser, isAdmin, getUser, async (req, res)
 })
 
 // Update any user by user ID
+router.patch('/users/:id', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+    try {
+        const { username, email, password, is_admin } = req.body
+        const user = res.user;
+
+        if (username !== undefined) { user.username = username }
+        if (email !== undefined) { user.email = email }
+        if (is_admin !== undefined) { user.is_admin = is_admin }
+        if (password !== undefined) {
+            const password_hash = await bcrypt.hash(password, 10);
+            user.password_hash = password_hash
+        }
+
+        await user.save();
+
+        res.status(200).json({ message: "User credentials patched" })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
 
 // Delete any user by user ID
 
