@@ -116,13 +116,27 @@ router.patch('/users/:id/decks/:deck_id', checkReqBody, jwtAuth, confirmUser, is
 
         await res.user.save();
 
-        res.status(200).json({ message: "User credentials patched" })
+        res.status(200).json({ message: "Deck credentials patched" })
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
 })
 
 // Delete any users deck by user ID and deck ID
+router.delete('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+    try {
+        const deck = res.user.library.id(req.params.deck_id)
+        if (!deck) {
+            return res.status(404).json({ message: "Deck not found" })
+        }
+
+        deck.deleteOne()
+        await res.user.save()
+        res.json({ message: 'Deleted deck' })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
 
 // Get any users flashcards given user ID and Deck ID
 
