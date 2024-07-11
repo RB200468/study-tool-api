@@ -159,6 +159,28 @@ router.delete('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUse
 })
 
 // Get any users flashcards given user ID and Deck ID
+router.get('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+    try {
+
+        const deck = res.user.library.id(req.params.deck_id)
+        if (!deck) {
+            return res.status(404).json({ message: "Deck not found" })
+        }
+
+        const flashcards = deck.flashcards.map(flashcard => ({
+            id: flashcard.id,
+            term: flashcard.term,
+            definition: flashcard.definition
+        }))
+
+        res.status(200).json(flashcards)
+
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
+// Create a flashcard given user ID and Deck ID
 
 // Update any users flashcard given user ID, deck ID and flashcard ID
 

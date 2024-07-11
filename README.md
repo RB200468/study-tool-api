@@ -93,6 +93,7 @@ npm start
 - `PATCH /api/v1/admins/users/:id` - Update user credentials by ID
 - `DELETE /api/v1/admins/users/:id` - Delete user by ID
 - `GET /api/v1/admins/users/:id/decks` - Get decks given user ID
+- `GET /api/v1/admins/users/:id/decks/:deck_id` - Get deck given user ID and deck ID
 - `POST /api/v1/admins/users/:id/decks` - Create deck given user ID
 - `PATCH /api/v1/admins/users/:id/decks/:deck_id` - Update deck name given user ID and deck ID
 - `DELETE /api/v1/admins/users/:id/decks/:deck_id` - Delete deck by user ID and deck ID
