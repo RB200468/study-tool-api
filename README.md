@@ -86,6 +86,11 @@ npm start
 
 # Endpoints
 
+### Admin
+
+- `GET /api/v1/admins/` - All users
+- `POST /api/v1/admins/register` - Register new user or admin
+
 ### Authentication
 
 - `POST /api/v1/auth/login` - Login user and get a token
@@ -93,8 +98,7 @@ npm start
 
 ### User
 
-- `GET /api/v1/users/` - All users
-- `GET /api/v1/users/:id` - Get user by ID
+- `GET /api/v1/users/` - Get current user object
 - `DELETE /api/v1/users/:id` - Delete user by ID
 
 ### Deck
