@@ -13,7 +13,7 @@ const checkReqBody = require('../middleware/checkReqBody')
 */
 
 // Register user or admin
-router.post('/register', async (req, res) => {
+router.post('/register', jwtAuth, confirmUser, isAdmin, async (req, res) => {
     try {
         const { username, password, email, is_admin } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -97,6 +97,26 @@ router.get('/users/:id/decks', jwtAuth, confirmUser, isAdmin, getUser, async (re
         }))
 
         res.status(200).json(decks)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
+// Create a deck for any user by user ID
+router.post('/users/:id/decks', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+    try {
+        const deckName = req.body.name;
+    
+
+        const newDeck = {
+            name: deckName,
+            flashcards: []
+        }
+
+        res.user.library.push(newDeck);
+        await res.user.save();
+
+        res.status(200).json({ message: "Deck created"})
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
