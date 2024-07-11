@@ -90,6 +90,7 @@ npm start
 
 - `GET /api/v1/admins/` - All users
 - `POST /api/v1/admins/register` - Register new user or admin
+- `PATCH /api/v1/admins/users/:id` - Update user credentials by ID
 
 ### Authentication
 
