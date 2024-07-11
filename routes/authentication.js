@@ -39,10 +39,10 @@ router.post('/login', async (req, res) => {
 // register user
 router.post('/register', async (req, res) => {
     try {
-        const { username, password, email, is_admin } = req.body;
+        const { username, password, email } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         
-        const user = new User({ username, password_hash: hashedPassword, email, is_admin });
+        const user = new User({ username, password_hash: hashedPassword, email });
 
         await user.save();
         res.status(201).json({ message: "User registered" });
