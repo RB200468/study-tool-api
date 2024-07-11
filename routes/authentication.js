@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
 const checkUser = require('../utils/checkUser');
-const jwt = require('jsonwebtoken');
 const createAndSetToken = require('../utils/createAndSetToken')
 
 /* TODO:
