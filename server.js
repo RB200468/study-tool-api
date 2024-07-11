@@ -25,12 +25,14 @@ const authenticationRouter = require('./routes/authentication')
 const deckRouter = require('./routes/decks')
 const flashcardRouter = require('./routes/flashcards')
 
+const apiRouter = express.Router();
 
-app.use('/users', usersRouter)
-app.use('/auth', authenticationRouter)
-app.use('/decks', deckRouter)
-app.use('/flashcards', flashcardRouter)
+apiRouter.use('/users', usersRouter)
+apiRouter.use('/auth', authenticationRouter)
+apiRouter.use('/decks', deckRouter)
+apiRouter.use('/flashcards', flashcardRouter)
 
+app.use('/api/v1', apiRouter);
 
 // Start server only if not in a test environment
 if (process.env.NODE_ENV !== 'test') {
