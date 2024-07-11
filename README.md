@@ -88,26 +88,26 @@ npm start
 
 ### Authentication
 
-- `POST /auth/login` - Login user and get a token
-- `POST /auth/register/` - Register new user
+- `POST /api/v1/auth/login` - Login user and get a token
+- `POST /api/v1/auth/register/` - Register new user
 
 ### User
 
-- `GET /users/` - All users
-- `GET /users/:id` - Get user by ID
-- `DELETE /users/:id` - Delete user by ID
+- `GET /api/v1/users/` - All users
+- `GET /api/v1/users/:id` - Get user by ID
+- `DELETE /api/v1/users/:id` - Delete user by ID
 
 ### Deck
 
-- `GET /decks/` - Get all decks of current authed user
-- `GET /decks/:id` - Get flashcards of current authed user by deck ID
-- `POST /decks/` - Create new deck for current authed user
-- `DELETE /decks/:id` - Delete deck of current authed user by ID
+- `GET /api/v1/decks/` - Get all decks of current authed user
+- `GET /api/v1/decks/:id` - Get flashcards of current authed user by deck ID
+- `POST /api/v1/decks/` - Create new deck for current authed user
+- `DELETE /api/v1/decks/:id` - Delete deck of current authed user by ID
 
 ### Flashcard
 
-- `POST /flashcards/:id` - Create a flashcard in current authed user's deck by deck ID
-- `DELETE /flashcards/:id` - Delete a flashcard in current authed user's deck by deck ID and flashcard ID
+- `POST /api/v1/flashcards/:id` - Create a flashcard in current authed user's deck by deck ID
+- `DELETE /api/v1/flashcards/:id` - Delete a flashcard in current authed user's deck by deck ID and flashcard ID
 
 # Authentication
 
