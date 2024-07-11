@@ -24,6 +24,7 @@ const usersRouter = require('./routes/users')
 const authenticationRouter = require('./routes/authentication')
 const deckRouter = require('./routes/decks')
 const flashcardRouter = require('./routes/flashcards')
+const adminRouter = require('./routes/admins')
 
 const apiRouter = express.Router();
 
@@ -31,6 +32,7 @@ apiRouter.use('/users', usersRouter)
 apiRouter.use('/auth', authenticationRouter)
 apiRouter.use('/decks', deckRouter)
 apiRouter.use('/flashcards', flashcardRouter)
+apiRouter.use('/admins', adminRouter)
 
 app.use('/api/v1', apiRouter);
 
