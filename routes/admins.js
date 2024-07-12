@@ -9,7 +9,8 @@ const getUser = require('../middleware/getUser');
 const checkReqBody = require('../middleware/checkReqBody')
 
 /* TODO:
-    - Implement all endpoints
+    - Create getDeck middleware
+    - Create getFlashcard middleware
 */
 
 // Register user or admin
