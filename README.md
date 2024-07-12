@@ -97,7 +97,8 @@ npm start
 - `POST /api/v1/admins/users/:id/decks` - Create deck given user ID
 - `PATCH /api/v1/admins/users/:id/decks/:deck_id` - Update deck name given user ID and deck ID
 - `DELETE /api/v1/admins/users/:id/decks/:deck_id` - Delete deck by user ID and deck ID
-- POST `http://localhost:5001/api/v1/admins/users/:id/decks/:deck_id` - Create flashcard given user ID and deck ID
+- `POST /api/v1/admins/users/:id/decks/:deck_id` - Create flashcard given user ID and deck ID
+- `DELETE /api/v1/admins/users/:id/decks/:decks_id/flashcards/:flashcard_id` - Delete flashcard given user ID, deck ID and flashcard ID
 
 ### Authentication
 
