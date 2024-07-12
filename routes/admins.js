@@ -181,6 +181,28 @@ router.get('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, 
 })
 
 // Create a flashcard given user ID and Deck ID
+router.post('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+    try{
+
+        const deck = res.user.library.id(req.params.deck_id)
+        if (!deck) {
+            res.status(404).json({ message: "Deck not found" })
+        }
+
+        const flashCard = {
+            term: req.body.term,
+            definition: req.body.definition
+        }
+
+        deck.flashcards.push(flashCard)
+        await res.user.save()
+
+        res.status(200).json({ message: "Flashcard created" })
+
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
 
 // Update any users flashcard given user ID, deck ID and flashcard ID
 
