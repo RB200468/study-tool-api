@@ -205,6 +205,30 @@ router.post('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser,
 })
 
 // Update any users flashcard given user ID, deck ID and flashcard ID
+router.patch('/users/:id/decks/:deck_id/flashcards/:flashcard_id', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+    try {
+        const { term, definition } = req.body
+
+        const deck = res.user.library.id(req.params.deck_id)
+        if (!deck) {
+            return res.status(404).json({ message: "Deck not found" })
+        }
+
+        const flashcard = deck.flashcards.id(req.params.flashcard_id)
+        if (!flashcard) {
+            return res.status(404).json({ message: "Flashcard not found" })
+        }
+
+        if (term !== undefined) { flashcard.term = term }
+        if (definition !== undefined) { flashcard.definition = definition }
+
+        await res.user.save();
+
+        res.status(200).json({ message: "Deck credentials patched" })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
 
 // Delete any users flashcard given user ID, deck ID and flashcard ID
 router.delete('/users/:id/decks/:deck_id/flashcards/:flashcard_id', jwtAuth, confirmUser, isAdmin, getUser, async (req,res) => {

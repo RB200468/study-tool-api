@@ -98,6 +98,7 @@ npm start
 - `PATCH /api/v1/admins/users/:id/decks/:deck_id` - Update deck name given user ID and deck ID
 - `DELETE /api/v1/admins/users/:id/decks/:deck_id` - Delete deck by user ID and deck ID
 - `POST /api/v1/admins/users/:id/decks/:deck_id` - Create flashcard given user ID and deck ID
+- `PATCH /api/v1/admins/users/:id/decks/:deck_id/flashcards/:flashcard_id` - Update flashcard given user ID, deck ID and flashcard ID
 - `DELETE /api/v1/admins/users/:id/decks/:decks_id/flashcards/:flashcard_id` - Delete flashcard given user ID, deck ID and flashcard ID
 
 ### Authentication
