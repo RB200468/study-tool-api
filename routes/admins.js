@@ -7,11 +7,12 @@ const confirmUser = require('../middleware/confirmUser')
 const isAdmin = require('../middleware/isAdmin');
 const getUser = require('../middleware/getUser');
 const checkReqBody = require('../middleware/checkReqBody')
+const getDeck = require('../middleware/getDeck')
 
 /* TODO:
-    - Create getDeck middleware
     - Create getFlashcard middleware
 */
+
 
 // Register user or admin
 router.post('/register', jwtAuth, confirmUser, isAdmin, async (req, res) => {
@@ -36,6 +37,7 @@ router.post('/register', jwtAuth, confirmUser, isAdmin, async (req, res) => {
       }
 })
 
+
 // Get all users
 router.get('/users',jwtAuth, confirmUser, isAdmin, async (req, res) => {
     try {
@@ -46,6 +48,7 @@ router.get('/users',jwtAuth, confirmUser, isAdmin, async (req, res) => {
     }
 })
 
+
 // Get any user by user ID
 router.get('/users/:id',jwtAuth, confirmUser, isAdmin, getUser, (req, res) => {
     try {
@@ -55,6 +58,7 @@ router.get('/users/:id',jwtAuth, confirmUser, isAdmin, getUser, (req, res) => {
         res.status(500).json({ message: err.message })
     }
 })
+
 
 // Update any user by user ID
 router.patch('/users/:id', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
@@ -78,6 +82,7 @@ router.patch('/users/:id', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser,
     }
 })
 
+
 // Delete any user by user ID
 router.delete('/users/:id', jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
     try {
@@ -87,6 +92,7 @@ router.delete('/users/:id', jwtAuth, confirmUser, isAdmin, getUser, async (req, 
         res.status(500).json({ message: err.message })
     }
 })
+
 
 // Get any users decks by user ID
 router.get('/users/:id/decks', jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
@@ -103,12 +109,12 @@ router.get('/users/:id/decks', jwtAuth, confirmUser, isAdmin, getUser, async (re
     }
 })
 
+
 // Create a deck for any user by user ID
 router.post('/users/:id/decks', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
     try {
         const deckName = req.body.name;
     
-
         const newDeck = {
             name: deckName,
             flashcards: []
@@ -123,18 +129,13 @@ router.post('/users/:id/decks', checkReqBody, jwtAuth, confirmUser, isAdmin, get
     }
 })
 
+
 // Update any users deck name by user ID and deck ID
 router.patch('/users/:id/decks/:deck_id', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
     try {
         const { name } = req.body
 
-        const deck = res.user.library.id(req.params.deck_id)
-        if (!deck) {
-            return res.status(404).json({ message: "Deck not found" })
-        }
-
-        if (name !== undefined) { deck.name = name }
-
+        if (name !== undefined) { res.deck.name = name }
         await res.user.save();
 
         res.status(200).json({ message: "Deck credentials patched" })
@@ -143,15 +144,11 @@ router.patch('/users/:id/decks/:deck_id', checkReqBody, jwtAuth, confirmUser, is
     }
 })
 
-// Delete any users deck by user ID and deck ID
-router.delete('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
-    try {
-        const deck = res.user.library.id(req.params.deck_id)
-        if (!deck) {
-            return res.status(404).json({ message: "Deck not found" })
-        }
 
-        deck.deleteOne()
+// Delete any users deck by user ID and deck ID
+router.delete('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, getDeck, async (req, res) => {
+    try {
+        res.deck.deleteOne()
         await res.user.save()
         res.json({ message: 'Deleted deck' })
     } catch (err) {
@@ -159,16 +156,11 @@ router.delete('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUse
     }
 })
 
+
 // Get any users flashcards given user ID and Deck ID
-router.get('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+router.get('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, getDeck, async (req, res) => {
     try {
-
-        const deck = res.user.library.id(req.params.deck_id)
-        if (!deck) {
-            return res.status(404).json({ message: "Deck not found" })
-        }
-
-        const flashcards = deck.flashcards.map(flashcard => ({
+        const flashcards = res.deck.flashcards.map(flashcard => ({
             id: flashcard.id,
             term: flashcard.term,
             definition: flashcard.definition
@@ -181,21 +173,17 @@ router.get('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, 
     }
 })
 
-// Create a flashcard given user ID and Deck ID
-router.post('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
-    try{
 
-        const deck = res.user.library.id(req.params.deck_id)
-        if (!deck) {
-            res.status(404).json({ message: "Deck not found" })
-        }
+// Create a flashcard given user ID and Deck ID
+router.post('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, getDeck, async (req, res) => {
+    try{
 
         const flashCard = {
             term: req.body.term,
             definition: req.body.definition
         }
 
-        deck.flashcards.push(flashCard)
+        res.deck.flashcards.push(flashCard)
         await res.user.save()
 
         res.status(200).json({ message: "Flashcard created" })
@@ -205,17 +193,13 @@ router.post('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser,
     }
 })
 
+
 // Update any users flashcard given user ID, deck ID and flashcard ID
-router.patch('/users/:id/decks/:deck_id/flashcards/:flashcard_id', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+router.patch('/users/:id/decks/:deck_id/flashcards/:flashcard_id', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser, getDeck, async (req, res) => {
     try {
         const { term, definition } = req.body
 
-        const deck = res.user.library.id(req.params.deck_id)
-        if (!deck) {
-            return res.status(404).json({ message: "Deck not found" })
-        }
-
-        const flashcard = deck.flashcards.id(req.params.flashcard_id)
+        const flashcard = res.deck.flashcards.id(req.params.flashcard_id)
         if (!flashcard) {
             return res.status(404).json({ message: "Flashcard not found" })
         }
@@ -231,16 +215,12 @@ router.patch('/users/:id/decks/:deck_id/flashcards/:flashcard_id', checkReqBody,
     }
 })
 
+
 // Delete any users flashcard given user ID, deck ID and flashcard ID
-router.delete('/users/:id/decks/:deck_id/flashcards/:flashcard_id', jwtAuth, confirmUser, isAdmin, getUser, async (req,res) => {
+router.delete('/users/:id/decks/:deck_id/flashcards/:flashcard_id', jwtAuth, confirmUser, isAdmin, getUser, getDeck, async (req,res) => {
     try{
 
-        const deck = res.user.library.id(req.params.deck_id)
-        if (!deck) {
-            return res.status(404).json({ message: "Deck not found" })
-        }
-
-        const flashcard = deck.flashcards.id(req.params.flashcard_id)
+        const flashcard = res.deck.flashcards.id(req.params.flashcard_id)
         if (!flashcard) {
             return res.status(404).json({ message: "Flashcard not found" })
         }
