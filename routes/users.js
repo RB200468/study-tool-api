@@ -1,10 +1,8 @@
 const express = require('express')
-const bcrypt = require('bcrypt');
 const router = express.Router()
-const User = require('../models/user')
 const getUser = require('../middleware/getUser');
 const jwtAuth = require('../middleware/jwtAuth');
-const confirmUser = require('../middleware/confirmUser');
+
 
 /* TODO:
     - Update Username
@@ -14,17 +12,21 @@ const confirmUser = require('../middleware/confirmUser');
 */
 
 // get user
-router.get('/', jwtAuth, confirmUser, (req, res) => {
-    res.send(req.user)
+router.get('/', jwtAuth, async (req, res) => {
+    try {
+        res.status(200).json(req.user)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
 })
 
 // update user
-router.patch('/:id', getUser, (req, res) => {
+router.patch('/:id', jwtAuth, getUser, (req, res) => {
     
 })
 
 // delete user
-router.delete('/:id', getUser, async (req, res) => {
+router.delete('/:id', jwtAuth, getUser, async (req, res) => {
     try {
         await res.user.deleteOne()
         res.json({ message: 'Deleted user' })

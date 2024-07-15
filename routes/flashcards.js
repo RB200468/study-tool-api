@@ -1,7 +1,6 @@
 const express = require('express');
 const User = require('../models/user');
 const jwtAuth = require('../middleware/jwtAuth');
-const confirmUser = require('../middleware/confirmUser');
 const router = express.Router();
 
 /* TODO:
@@ -9,7 +8,7 @@ const router = express.Router();
 */
 
 // Create one given deck id, term and definition
-router.post('/:id', jwtAuth, confirmUser, async (req, res) => {
+router.post('/:id', jwtAuth, async (req, res) => {
     try{
 
         const deck = req.user.library.id(req.params.id)
@@ -33,7 +32,7 @@ router.post('/:id', jwtAuth, confirmUser, async (req, res) => {
 })
 
 // Delete a flashcard
-router.delete('/:id', jwtAuth, confirmUser, async (req,res) => {
+router.delete('/:id', jwtAuth, async (req,res) => {
     try{
 
         const deck = req.user.library.id(req.params.id)
