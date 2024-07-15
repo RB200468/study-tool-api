@@ -3,7 +3,11 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.DB_CONNECTION_STRING);
+    if (process.env.NODE_ENV === "production") {
+      await mongoose.connect(process.env.CONNECTION_URI_PROD);
+    } else {
+      await mongoose.connect(process.env.CONNECTION_URI_DEV);
+    }
     if (process.env.NODE_ENV !== 'test') {
       console.log('Database connected');
     }

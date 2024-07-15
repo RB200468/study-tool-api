@@ -7,7 +7,8 @@ const isAdmin = require('../middleware/isAdmin');
 const getUser = require('../middleware/getUser');
 const checkReqBody = require('../middleware/checkReqBody')
 const getDeck = require('../middleware/getDeck')
-const getFlashcard = require('../middleware/getFlashcard')
+const getFlashcard = require('../middleware/getFlashcard');
+const validPassword = require('../utils/validPassword');
 
 /* TODO:
     - Create getFlashcard middleware
@@ -18,6 +19,11 @@ const getFlashcard = require('../middleware/getFlashcard')
 router.post('/register', jwtAuth, isAdmin, async (req, res) => {
     try {
         const { username, password, email, is_admin } = req.body;
+
+        if (!validPassword(password)){
+            return res.status(400).json({ message: "Invalid password format" })
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
         
         const user = new User({ username, password_hash: hashedPassword, email, is_admin });
