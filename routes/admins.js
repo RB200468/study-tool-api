@@ -3,7 +3,6 @@ const router = express.Router()
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const jwtAuth = require('../middleware/jwtAuth');
-const confirmUser = require('../middleware/confirmUser')
 const isAdmin = require('../middleware/isAdmin');
 const getUser = require('../middleware/getUser');
 const checkReqBody = require('../middleware/checkReqBody')
@@ -16,7 +15,7 @@ const getFlashcard = require('../middleware/getFlashcard')
 
 
 // Register user or admin
-router.post('/register', jwtAuth, confirmUser, isAdmin, async (req, res) => {
+router.post('/register', jwtAuth, isAdmin, async (req, res) => {
     try {
         const { username, password, email, is_admin } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -40,7 +39,7 @@ router.post('/register', jwtAuth, confirmUser, isAdmin, async (req, res) => {
 
 
 // Get all users
-router.get('/users',jwtAuth, confirmUser, isAdmin, async (req, res) => {
+router.get('/users',jwtAuth, isAdmin, async (req, res) => {
     try {
         const users = await User.find()
         res.status(200).json(users)
@@ -51,7 +50,7 @@ router.get('/users',jwtAuth, confirmUser, isAdmin, async (req, res) => {
 
 
 // Get any user by user ID
-router.get('/users/:id',jwtAuth, confirmUser, isAdmin, getUser, (req, res) => {
+router.get('/users/:id',jwtAuth, isAdmin, getUser, (req, res) => {
     try {
         const user = res.user
         res.status(200).json(user)
@@ -62,7 +61,7 @@ router.get('/users/:id',jwtAuth, confirmUser, isAdmin, getUser, (req, res) => {
 
 
 // Update any user by user ID
-router.patch('/users/:id', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+router.patch('/users/:id', checkReqBody, jwtAuth, isAdmin, getUser, async (req, res) => {
     try {
         const { username, email, password, is_admin } = req.body
         const user = res.user;
@@ -85,7 +84,7 @@ router.patch('/users/:id', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser,
 
 
 // Delete any user by user ID
-router.delete('/users/:id', jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+router.delete('/users/:id', jwtAuth, isAdmin, getUser, async (req, res) => {
     try {
         await res.user.deleteOne()
         res.json({ message: 'Deleted user' })
@@ -96,7 +95,7 @@ router.delete('/users/:id', jwtAuth, confirmUser, isAdmin, getUser, async (req, 
 
 
 // Get any users decks by user ID
-router.get('/users/:id/decks', jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+router.get('/users/:id/decks', jwtAuth, isAdmin, getUser, async (req, res) => {
     try {
 
         const decks = res.user.library.map(deck => ({
@@ -112,7 +111,7 @@ router.get('/users/:id/decks', jwtAuth, confirmUser, isAdmin, getUser, async (re
 
 
 // Create a deck for any user by user ID
-router.post('/users/:id/decks', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser, async (req, res) => {
+router.post('/users/:id/decks', checkReqBody, jwtAuth, isAdmin, getUser, async (req, res) => {
     try {
         const deckName = req.body.name;
     
@@ -132,7 +131,7 @@ router.post('/users/:id/decks', checkReqBody, jwtAuth, confirmUser, isAdmin, get
 
 
 // Update any users deck name by user ID and deck ID
-router.patch('/users/:id/decks/:deck_id', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser, getDeck, async (req, res) => {
+router.patch('/users/:id/decks/:deck_id', checkReqBody, jwtAuth, isAdmin, getUser, getDeck, async (req, res) => {
     try {
         const { name } = req.body
 
@@ -147,7 +146,7 @@ router.patch('/users/:id/decks/:deck_id', checkReqBody, jwtAuth, confirmUser, is
 
 
 // Delete any users deck by user ID and deck ID
-router.delete('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, getDeck, async (req, res) => {
+router.delete('/users/:id/decks/:deck_id', jwtAuth, isAdmin, getUser, getDeck, async (req, res) => {
     try {
         res.deck.deleteOne()
         await res.user.save()
@@ -159,7 +158,7 @@ router.delete('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUse
 
 
 // Get any users flashcards given user ID and Deck ID
-router.get('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, getDeck, async (req, res) => {
+router.get('/users/:id/decks/:deck_id', jwtAuth, isAdmin, getUser, getDeck, async (req, res) => {
     try {
         const flashcards = res.deck.flashcards.map(flashcard => ({
             id: flashcard.id,
@@ -176,7 +175,7 @@ router.get('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, 
 
 
 // Create a flashcard given user ID and Deck ID
-router.post('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser, getDeck, async (req, res) => {
+router.post('/users/:id/decks/:deck_id', jwtAuth, isAdmin, getUser, getDeck, async (req, res) => {
     try{
 
         const flashCard = {
@@ -196,7 +195,7 @@ router.post('/users/:id/decks/:deck_id', jwtAuth, confirmUser, isAdmin, getUser,
 
 
 // Update any users flashcard given user ID, deck ID and flashcard ID
-router.patch('/users/:id/decks/:deck_id/flashcards/:flashcard_id', checkReqBody, jwtAuth, confirmUser, isAdmin, getUser, getDeck, getFlashcard, async (req, res) => {
+router.patch('/users/:id/decks/:deck_id/flashcards/:flashcard_id', checkReqBody, jwtAuth, isAdmin, getUser, getDeck, getFlashcard, async (req, res) => {
     try {
         const { term, definition } = req.body
 
@@ -213,7 +212,7 @@ router.patch('/users/:id/decks/:deck_id/flashcards/:flashcard_id', checkReqBody,
 
 
 // Delete any users flashcard given user ID, deck ID and flashcard ID
-router.delete('/users/:id/decks/:deck_id/flashcards/:flashcard_id', jwtAuth, confirmUser, isAdmin, getUser, getDeck, getFlashcard, async (req,res) => {
+router.delete('/users/:id/decks/:deck_id/flashcards/:flashcard_id', jwtAuth, isAdmin, getUser, getDeck, getFlashcard, async (req,res) => {
     try{
         res.flashcard.deleteOne()
         await res.user.save()
