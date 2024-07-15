@@ -14,11 +14,6 @@ app.use(cookieParser())
     - 
 */
 
-
-// Database connection
-connectDB()
-
-
 // Routers
 const usersRouter = require('./routes/users')
 const authenticationRouter = require('./routes/authentication')
@@ -38,6 +33,7 @@ app.use('/api/v1', apiRouter);
 
 // Start server only if not in a test environment
 if (process.env.NODE_ENV !== 'test') {
+    connectDB()
     const PORT = process.env.PORT;
     const server = app.listen(PORT, () => {
         console.log(`Server listening on port ${PORT}`);
