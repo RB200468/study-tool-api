@@ -8,16 +8,20 @@ const bcrypt = require('bcrypt')
 
 
 /* TODO:
-    - Update Username
-    - Update Email
-    - Update Password
-    - Get user for current authenticated user
+    -
 */
 
 // get user
 router.get('/', jwtAuth, async (req, res) => {
     try {
-        res.status(200).json(req.user)
+        const user = {
+            id: req.user.id,
+            username: req.user.username,
+            email: req.user.email,
+            library: req.user.library
+        }
+
+        res.status(200).json(user)
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
