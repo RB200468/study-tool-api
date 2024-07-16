@@ -70,12 +70,18 @@ router.get('/users/:id',jwtAuth, isAdmin, getUser, (req, res) => {
 router.patch('/users/:id', checkReqBody, jwtAuth, isAdmin, getUser, async (req, res) => {
     try {
         const { username, email, password, is_admin } = req.body
+
         const user = res.user;
 
         if (username !== undefined) { user.username = username }
         if (email !== undefined) { user.email = email }
         if (is_admin !== undefined) { user.is_admin = is_admin }
+        
         if (password !== undefined) {
+            if (!validPassword(password)){
+                return res.status(400).json({ message: "Invalid password format" })
+            }
+            
             const password_hash = await bcrypt.hash(password, 10);
             user.password_hash = password_hash
         }
