@@ -1,10 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const getUser = require('../middleware/getUser');
+const bcrypt = require('bcrypt')
 const jwtAuth = require('../middleware/jwtAuth');
 const checkReqBody = require('../middleware/checkReqBody');
 const validPassword = require('../utils/validPassword');
-const bcrypt = require('bcrypt')
 
 
 /* TODO:

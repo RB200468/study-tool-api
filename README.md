@@ -12,7 +12,6 @@ Currently in development, subject to changes and improvement.
 - [Endpoints](#endpoints)
 - [Authentication](#authentication)
 - [Error Handling](#error-handling)
-- [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
 
@@ -61,7 +60,11 @@ Create a `.env` file in the root of your project and add the following environme
 ```sh
 NODE_ENV=your_node_environment
 
-DB_CONNECTION_STRING=your_mongodb_connection_string
+CONNECTION_URI_DEV=your_development_db_URI
+
+CONNECTION_URI_TEST=your_test_db_URI
+
+CONNECTION_URI_PROD=your_production_db_URI
 
 JWT_SECRET=your_jwt_secret
 
@@ -84,6 +87,12 @@ To start the server in production mode:
 npm start
 ```
 
+To run all tests:
+
+```sh
+npm run test
+```
+
 # Endpoints
 
 ### Admin
@@ -103,13 +112,13 @@ npm start
 
 ### Authentication
 
-- `POST /api/v1/auth/login` - Login user and get a token
+- `POST /api/v1/auth/login/` - Login user and get a token
 - `POST /api/v1/auth/register/` - Register new user
 
 ### User
 
 - `GET /api/v1/users/` - Get current user object
-- `DELETE /api/v1/users/:id` - Delete user by ID
+- `PATCH /api/v1/users/` - Update current user credentials
 
 ### Deck
 
