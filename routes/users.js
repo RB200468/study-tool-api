@@ -50,14 +50,4 @@ router.patch('/', checkReqBody, jwtAuth, async (req, res) => {
     }
 })
 
-// delete user
-router.delete('/', jwtAuth, async (req, res) => {
-    try {
-        await req.user.deleteOne()
-        res.json({ message: 'Deleted user' })
-    } catch (err) {
-        res.status(500).json({ message: err.message })
-    }
-})
-
 module.exports = router
